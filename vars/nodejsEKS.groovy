@@ -16,6 +16,7 @@ def call(Map configMap){
             component = configMap.get("component")
             project = configMap.get("project")
             def releaseExists = ""
+            
         }
         stages {
             stage('read the version'){
@@ -85,6 +86,7 @@ def call(Map configMap){
             stage('Verify Deployment'){
                 steps{
                     script{
+                        def rollbackStatus = " "
                         rollbackStatus = sh(script: "kubectl rollout status deployment/backend -n ${project} --timeout=1m || true", returnStdout: true).trim()
                         if(rollbackStatus.contains('successfully rolled out')){
                             echo "Deployment is successfull"
